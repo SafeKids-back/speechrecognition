@@ -1,5 +1,6 @@
 import asyncio
 import speech_recognition as sr
+import sys
 
 
 trigger_phrases_ua = ["гвинтокрил", "привіт пока до побачення", "твоя мама попросила мене", "ти сьогодні без мами", "пішли зі мною", "відведу додому"]
@@ -17,10 +18,14 @@ async def process_speech(text: str):
 
     for phrase in trigger_phrases_ua:
         if phrase in text:
+            sys.stdout.write("true\n")
+            sys.stdout.flush()
             print("Found trigger phrase in Ukrainian:", phrase)
 
     for phrase in trigger_phrases_ru:
         if phrase in text:
+            sys.stdout.write("true\n")
+            sys.stdout.flush()
             print("Found trigger phrase in Russian:", phrase)
 
 
@@ -62,16 +67,12 @@ async def recognize_audio():
             await process_speech(ru_text)
 
 
-async def print_second():
-    while True:
-        print('Програма працює асинхронно.')
-        await asyncio.sleep(1)
-
-
 async def main():
-    await asyncio.gather(
-        recognize_audio(),
-        print_second()
-    )
+    await recognize_audio()
 
-asyncio.run(main())
+
+def start_recognition():
+    asyncio.run(main())
+
+
+start_recognition()
